@@ -1,35 +1,5 @@
 # Ejercicio 6
 
----
-
-## Parte 1
-
-1. Desarrollar en **lenguaje natural** y **seudocódigo de alto nivel** un algoritmo sencillo que permita determinar si un grafo contiene ciclos (15 minutos).
-2. Dada la interfaz y las clases auxiliares, implementar el método `tieneCiclos`, que retorna `true` si el grafo tiene ciclos (20 minutos).
-3. Dados los archivos `conexiones_2.txt` y `aeropuertos_2.txt`, ejecutar el programa e indicar si el grafo resultante contiene ciclos o no (5 minutos).
-
-## Parte 2 – Camino crítico
-
-La ordenación topológica o sort topológico es ampliamente utilizado en planificación y gestión de proyectos o procesos que tienen una gran cantidad de tareas. Las tareas suelen tener recursos asignados (tiempo, horas hombre, materia prima necesaria, etc.). Las tareas pueden verse como un cambio de estado de un cierto elemento. Existen naturalmente precedencias entre las tareas (ejemplo: antes de pintar la pared es necesario revocarla, y antes construirla, etc.).
-
-De todos los posibles «caminos» que representan las diferentes secuencias de tareas, existe al menos uno que, si cualquiera de las tareas que lo constituyen se atrasa, entonces todo el proyecto se atrasará. Este es el llamado **«camino crítico»** del proyecto (una herramienta muy utilizada en planificación es el PERT, «diagrama de camino crítico»).
-
-Las demás secuencias (que no son camino crítico) podrán tener ciertas demoras en algunas de sus tareas, hasta alcanzar la magnitud del camino crítico. Por ejemplo, si una secuencia de tareas que es camino crítico tiene un costo total de 23 días (suma de los costos de las tareas o arcos), y otra secuencia tiene un costo o duración total de 15 días, esto significará que existe una **«holgura»** de 8 días, es decir, algunas de las tareas que componen esta secuencia podrán empezar y terminar en diferentes fechas, siempre que no excedan la final. Esto nos permite, al planificar los trabajos, buscar formas de distribuir los recursos existentes de manera más homogénea, evitar picos de necesidad de recursos o espacios ociosos.
-
-Se desea desarrollar entonces un algoritmo que, dado un grafo (que debería ser acíclico) permita:
-
-- calcular el **costo total del camino crítico** e indicar cómo está compuesto este camino, y
-- **listar todas las demás secuencias** de tareas posibles, sus costos totales y la **holgura** existente
-- deberán establecerse las estructuras apropiadas con las modificaciones que sean necesarias
-
-## Parte 3
-
-Los grafos dirigidos acíclicos son modelos adecuados para representar órdenes parciales. Por ejemplo, el sistema de previaturas de las asignaturas de una carrera universitaria o un orden necesario en el que se deben ejecutar las tareas de un proyecto. En un proyecto modelado con un grafo dirigido en el que los vértices son las tareas y las aristas dirigidas representan las precedencias (existe un vértice de Fin del proyecto), se puede obtener una lista de vértices cuyo orden representa un orden posible de ejecución de las tareas del proyecto (contiene todas las tareas del proyecto).
-
-**Tarea:** Desarrollar el algoritmo `calcularClasificacionTopologica` definido en la interfaz `IDirectedGraphAlgorithms`.
-
----
-
 ## Resolución – Parte 1
 
 ### 1. Algoritmo en lenguaje natural
