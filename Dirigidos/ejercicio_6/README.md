@@ -46,7 +46,7 @@ tieneCiclosDesde(v, visitados, enCamino): booleano
 FIN
 ```
 
-**Orden de tiempo:** cada vértice se visita una sola vez y cada arista se recorre una sola vez, por lo que el algoritmo es **O(V + E)**.
+**Orden de tiempo:** cada vértice se visita una sola vez y cada arista se recorre una sola vez, por lo que el algoritmo es **O(V + A)**.
 
 
 ### 2. Implementación de `tieneCiclos`
