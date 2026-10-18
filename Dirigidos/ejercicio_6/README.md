@@ -89,7 +89,16 @@ El método está implementado en `DirectedGraph`:
 
 ### 3. Ejecución con `conexiones_2.txt` y `aeropuertos_2.txt`
 
-> No se contó con los archivos `conexiones_2.txt` y `aeropuertos_2.txt`, por lo que no se pudo ejecutar el programa con esos datos.
+Para cargar el grafo usamos la clase `GraphLoader`, que lee un aeropuerto por línea de `aeropuertos_2.txt` y las conexiones con el formato `origen,destino,costo` de `conexiones_2.txt`. Después, desde el `App (main)`, llamamos a `tieneCiclos()`.
+
+Se cargaron **9 aeropuertos** y **15 conexiones**, y el resultado fue:
+
+```
+El grafo SI tiene ciclos
+Ciclo encontrado: Florianopolis -> Rio_de_Janeiro -> San_Pablo -> Florianopolis
+```
+
+**El grafo sí contiene ciclos.** Además del que muestra el programa, hay otros más chicos porque hay vuelos de ida y vuelta, por ejemplo `San_Pablo → Santos → San_Pablo`.
 
 ---
 
@@ -107,6 +116,17 @@ Para sacar todas las secuencias de tareas reutilizamos el `obtenerTodosLosCamino
 
 Para guardar el resultado hicimos una clase nueva `CaminoCriticoResult` en la carpeta `result`. Tiene el camino crítico, su costo, la lista con las otras secuencias y un método `getHolgura(secuencia)` que devuelve cuánto se puede atrasar esa secuencia.
 
+### Prueba con los datos de `conexiones_2.txt`
+
+Con el grafo completo **no se puede calcular el camino crítico** porque tiene ciclos. Por eso, se tomó el subgrafo sin ciclos que sale de **Asunción**.
+
+| Secuencia | Costo | Holgura |
+|---|:---:|:---:|
+| **Asunción → Buenos Aires → Porto Alegre → Montevideo** | **3850** | **0 (crítico)** |
+| Asunción → Curitiba → Montevideo | 2200 | 1650 |
+| Asunción → Buenos Aires → Montevideo | 1800 | 2050 |
+| Asunción → Porto Alegre → Montevideo | 1700 | 2150 |
+
 ---
 
 ## Resolución – Parte 3
@@ -117,4 +137,16 @@ El método `calcularClasificacionTopologica` está implementado en `DirectedGrap
 
 - Si es acíclico, se realiza una búsqueda en profundidad desde cada vértice no visitado. Cada vértice se apila **cuando termina** de recorrer todos sus sucesores.
 
+
 - Al final, la pila contiene los vértices en orden topológico: cada tarea aparece antes que las tareas que dependen de ella.
+
+
+### Prueba con los datos de `conexiones_2.txt`
+
+Con el grafo completo devuelve una lista vacía, porque tiene ciclos y no existe un orden topológico. Con la parte del grafo que sale de Asunción nos dio:
+
+```
+Asuncion -> Curitiba -> Buenos_Aires -> Porto_Alegre -> Montevideo
+```
+
+Cada aeropuerto aparece antes que todos aquellos a los que tiene vuelos.
