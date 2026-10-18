@@ -30,7 +30,7 @@ y retorna una lista de caminos, donde para cada camino se conoce:
 
 Para encontrar todos los vuelos posibles entre una ciudad origen y una ciudad destino, la idea es hacer una búsqueda en profundidad pero que vaya guardando el camino que lleva hasta el momento. Arrancamos en la ciudad origen con el costo en 0 y desde ahí vamos probando cada una de las ciudades a las que se puede ir directo. Cada vez que vamos a una ciudad nueva la agregamos al camino y le sumamos el costo del vuelo, pero solo si esa ciudad no está ya en el camino.
 
-Cuando una ciudad ya no tiene más vuelos para probar, volvemos para atrás: la sacamos del camino y le restamos su costo, para poder seguir probando las otras opciones desde la ciudad anterior.
+Cuando una ciudad ya no tiene más vuelos para probar, volvemos para atrás. Al ir para atrás, la sacamos del camino y le restamos su costo, para poder seguir probando las otras opciones desde la ciudad anterior.
 
 Si en algún momento llegamos a la ciudad destino, guardamos ese camino con su costo total en una lista de resultados.
 
