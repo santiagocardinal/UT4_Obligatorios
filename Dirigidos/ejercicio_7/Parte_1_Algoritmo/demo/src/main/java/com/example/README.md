@@ -1,35 +1,5 @@
 # Ejercicio 7
 
-## Parte 1
-
-Dada la siguiente matriz de adyacencias:
-
-|   | A | B | C | D | E |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| **A** | - | 1 | 2 | 7 | - |
-| **B** | 7 | - | 1 | 2 | - |
-| **C** | - | - | - | 3 | - |
-| **D** | 6 | - | 4 | - | 4 |
-| **E** | - | 2 | - | 8 | - |
-
-1. Dibuja el grafo dirigido.
-2. Halla los caminos de menor costo, aplicando el algoritmo de **Dijkstra** paso a paso, desde el vértice **B** hasta todos los otros vértices.
-3. Indica cuáles son los caminos de menor costo utilizando un **vector de predecesores**.
-4. Escribe un algoritmo para, dado el vector de predecesores, **imprimir el camino** entre el vértice origen y un vértice destino indicado como parámetro.
-
-## Parte 2
-
-Dado el grafo de la figura, y utilizando el algoritmo de **FLOYD**:
-
-- Dibuja la representación mediante lista de adyacencias.
-- Encuentra los caminos de menor costo entre los vértices del grafo de la figura.
-- Utilizando una matriz de predecesores, muestra cómo recuperar el camino entre un par de vértices dados.
-- ¿Cuál es el camino de menor costo entre los vértices A y E? (utiliza el algoritmo, ejecutando paso a paso, para resolver).
-- ¿Cuáles son las excentricidades de los vértices del grafo?
-- ¿Qué vértice
-
---- 
-
 ## Resolución – Parte 1
 
 ### 4. Algoritmo para imprimir el camino a partir del vector de predecesores
