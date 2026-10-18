@@ -1,1 +1,1 @@
-# En esta caroeta de encontrarán los ejercicios de los ' grafos dirigidos '.
+# En esta carpeta de encontrarán los ejercicios de los ' grafos dirigidos '.
