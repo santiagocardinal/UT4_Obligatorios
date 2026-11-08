@@ -1,0 +1,6 @@
+Número de Bacon
+John_Goodman: 2
+Tom_Cruise: 1
+Jason_Statham: 5
+Lukas_Haas: 3
+Djimon_Hounsou: 4
