@@ -1,49 +1,5 @@
 # Ejercicio 1
 
-Una compañía de aviación nacional necesita representar los vuelos que opera en diferentes aeropuertos y calcular cuáles son los viajes de menor costo que permiten unir esos aeropuertos. Los aeropuertos en los que opera son: **Artigas, Canelones, Colonia, Durazno, Florida, Montevideo, Punta del Este y Rocha**.
-
-Los vuelos operados son (origen, destino, distancia):
-
-| Origen | Destino | Distancia |
-|---|---|:---:|
-| Artigas | Rocha | 400 |
-| Canelones | Artigas | 500 |
-| Canelones | Colonia | 200 |
-| Canelones | Durazno | 170 |
-| Canelones | Punta del Este | 90 |
-| Colonia | Montevideo | 180 |
-| Florida | Durazno | 60 |
-| Montevideo | Artigas | 700 |
-| Montevideo | Canelones | 30 |
-| Montevideo | Punta del Este | 130 |
-| Punta del Este | Rocha | 90 |
-| Rocha | Montevideo | 270 |
-
-El analista a quien se le ha encargado la tarea ha decidido que la mejor forma de solucionar el problema es mediante el uso de **grafos dirigidos**.
-
----
-
-## Parte 1
-
-1. Represente el escenario mediante:
-   - **a)** Matriz de adyacencias (ponderada por minutos; usar 0/∞ donde corresponda).
-   - **b)** Lista de adyacencias indicando, para cada vértice, sus aristas salientes con pesos.
-2. Dibuje el grafo dirigido resultante, rotulando vértices y pesos de las aristas.
-
-## Parte 2
-
-Aplicando paso a paso el método de **Dijkstra**, calcular el vuelo de menor costo (distancia) entre el aeropuerto de Montevideo y cada uno de los otros aeropuertos. ¿Cuál es el trayecto recorrido? (salida – escalas – destino)
-
-## Parte 3
-
-1. Descargar el proyecto de la unidad temática e incluirlo en el proyecto del curso.
-2. Analice las interfaces:
-   - `IGraph`
-   - `IDirectedIGraph`
-   - `IDirectedGraphAlgorithms`
-   - `IGraphAlgorithms`
-3. Evaluar y considerar la API de colecciones de Java para implementar la interfaz `IDirectedIGraph`. Considerar el uso de distintas estructuras de datos y evaluar el consumo de memoria y el orden de tiempo de ejecución.
----
 # Resolución – Parte 3
 
 ## Análisis de `IGraph`

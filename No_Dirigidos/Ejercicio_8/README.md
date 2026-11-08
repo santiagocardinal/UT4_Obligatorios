@@ -1,10 +1,6 @@
 # Ejercicio 8 – Algoritmo de Prim
 
-Una compañía de reforestación sembrará árboles en seis zonas en la misma área. Para esto debe desarrollar un sistema de caminos de tierra para tener acceso a cualquier zona desde cualquier otra.
-
-La distancia (en kilómetros) entre cada par de zonas está dada en la siguiente tabla:
-
-### Matriz de distancias
+Una compañía de reforestación sembrará árboles en seis zonas en la misma área. Para esto debe desarrollar un sistema de caminos de tierra para tener acceso a cualquier zona desde cualquier otra. La distancia (en kilómetros) entre cada par de zonas está dada en la siguiente tabla:
 
 | Zona | Zona 1 | Zona 2 | Zona 3 | Zona 4 | Zona 5 | Zona 6 |
 |---|---|---|---|---|---|---|
@@ -40,176 +36,260 @@ Se desea determinar la menor y más barata (cuanto más corto, menos costoso) ca
 
 ---
 
-## Parte 1 – Representación del problema
+## Parte 1
 
-### 1. Modelado del problema como un grafo
+### 1. Estructuras, conceptos y algoritmos que se pueden aplicar
 
-Para representar las zonas del parque y los caminos que las conectan, utilizamos un grafo no dirigido y ponderado.
+Para representar las zonas y los caminos usamos un **grafo no dirigido y ponderado**:
 
-- **Vértices:** representan las distintas zonas del parque.
-- **Aristas:** representan los caminos que conectan dos zonas.
-- **Pesos:** representan la distancia en kilómetros de cada camino.
+- **Vértices:** las 6 zonas.
+- **Aristas:** los caminos posibles entre dos zonas.
+- **Pesos:** la distancia en kilómetros de cada camino (que es lo que determina el costo).
 
-El grafo es no dirigido porque se puede circular por los caminos en ambos sentidos. Además, es ponderado porque cada camino tiene una distancia asociada.
+Es no dirigido porque un camino de tierra se puede recorrer en los dos sentidos (por eso la matriz es simétrica), y es ponderado porque cada camino tiene una distancia. 
 
-Para conectar todas las zonas utilizando la menor cantidad total de kilómetros posible, sin generar ciclos. Para esto utilizamos un árbol de expansión mínima (MST).
 
-### 2. Matriz de adyacencia
+Los algoritmos vistos en la unidad para encontrar el arbol abarcador minimo son:
 
-La matriz de adyacencia representa las distancias entre las distintas zonas. Cuando no existe un camino entre dos zonas, se utiliza una X.
+- **Prim:** arranca en un vértice cualquiera y va haciendo crecer un solo árbol. En cada paso agrega la arista más barata que une un vértice que ya está en el árbol con uno que todavía no está.
+- **Kruskal:** ordena todas las aristas de menor a mayor y las va agregando siempre que no formen un ciclo.
 
-|      | Z1 | Z2 | Z3 | Z4 | Z5 | Z6 |
-|------|----|----|----|----|----|----|
-| Z1   | X  | 2  | 5  | 1  | 7  | 2  |
-| Z2   | 2  | X  | 1  | 3  | 5  | 6  |
-| Z3   | 5  | 1  | X  | 2  | 3  | 5  |
-| Z4   | 1  | 3  | 2  | X  | 7  | 1  |
-| Z5   | 7  | 5  | 3  | 7  | X  | 4  |
-| Z6   | 2  | 6  | 5  | 1  | 4  | X  |
+### 2. Representación mediante Lista de Adyacencias
 
-### 3. Representación visual del grafo
+Como el grafo es no dirigido, cada arista aparece **dos veces** (una en la lista de cada extremo). Formato: `(destino, costo)`.
+
+```
+Zona 1 → (Zona 2, 2) → (Zona 3, 5) → (Zona 4, 1) → (Zona 5, 7) → (Zona 6, 2)
+Zona 2 → (Zona 1, 2) → (Zona 3, 1) → (Zona 4, 3) → (Zona 5, 5) → (Zona 6, 6)
+Zona 3 → (Zona 1, 5) → (Zona 2, 1) → (Zona 4, 2) → (Zona 5, 3) → (Zona 6, 5)
+Zona 4 → (Zona 1, 1) → (Zona 2, 3) → (Zona 3, 2) → (Zona 5, 7) → (Zona 6, 1)
+Zona 5 → (Zona 1, 7) → (Zona 2, 5) → (Zona 3, 3) → (Zona 4, 7) → (Zona 6, 4)
+Zona 6 → (Zona 1, 2) → (Zona 2, 6) → (Zona 3, 5) → (Zona 4, 1) → (Zona 5, 4)
+```
+
+### 3. Representación gráfica de la red
 
 Imagen 1 (imagen de arriba).
 
+
 ### 4. Aplicación del algoritmo de Prim
 
-Para encontrar el árbol de expansión mínima utilizamos el algoritmo de Prim.
+Comenzamos desde la Zona 1. En cada paso miramos **todas** las zonas que ya están en el árbol (U) y elegimos el camino más corto que va desde alguna de ellas hacia una zona que todavía no está. Para cada zona fuera del árbol anotamos la menor distancia con la que se puede conectar y desde qué zona (`✔` = ya está en el árbol).
 
-Comenzamos desde la Zona 1 y buscamos, en cada paso, el camino de menor distancia que conecte una zona ya visitada con otra que todavía no fue visitada.
+**Paso 0 – Inicio.** U = {1}
 
-Los pasos son los siguientes:
+| Zona | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| Distancia mínima | 2 | 5 | **1** | 7 | 2 |
+| Desde | 1 | 1 | 1 | 1 | 1 |
 
-1. Comenzamos en la Zona 1. El camino más corto disponible es el que conecta la Zona 1 con la Zona 4, con una distancia de 1 km.
+El menor es 1 → agregamos **Zona 1 – Zona 4 (1 km)**.
 
-2. Desde la Zona 4, el camino más corto hacia una zona no visitada es el que conecta con la Zona 6, también de 1 km.
+**Paso 1.** U = {1, 4}. Costo acumulado: 1 km.
 
-3. Ahora tenemos las zonas 1, 4 y 6 conectadas. Entre los caminos disponibles de menor distancia hay un empate de 2 km. Elegimos conectar la Zona 1 con la Zona 2.
+Actualizamos con los caminos de la Zona 4: hacia la 3 cuesta 2 (mejor que 5) y hacia la 6 cuesta 1 (mejor que 2).
 
-4. Desde la Zona 2 encontramos un camino de 1 km hacia la Zona 3, por lo que agregamos esa conexión.
+| Zona | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| Distancia mínima | 2 | 2 | ✔ | 7 | **1** |
+| Desde | 1 | 4 | | 1 | 4 |
 
-5. Finalmente, el camino más corto para conectar la Zona 5 es el que viene desde la Zona 3, con una distancia de 3 km.
+El menor es 1 → agregamos **Zona 4 – Zona 6 (1 km)**.
 
-De esta manera, todas las zonas quedan conectadas.
+**Paso 2.** U = {1, 4, 6}. Costo acumulado: 2 km.
 
-### 5. Árbol de expansión mínima obtenido
+Con los caminos de la Zona 6, la Zona 5 pasa a costar 4 (mejor que 7).
+
+| Zona | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| Distancia mínima | **2** | 2 | ✔ | 4 | ✔ |
+| Desde | 1 | 4 | | 6 | |
+
+Hay un empate de 2 km entre Zona 1 – Zona 2 y Zona 4 – Zona 3. Elegimos **Zona 1 – Zona 2 (2 km)**, porque es la primera que encontramos.
+
+**Paso 3.** U = {1, 2, 4, 6}. Costo acumulado: 4 km.
+
+Con los caminos de la Zona 2, la Zona 3 pasa a costar 1 (mejor que 2).
+
+| Zona | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| Distancia mínima | ✔ | **1** | ✔ | 4 | ✔ |
+| Desde | | 2 | | 6 | |
+
+El menor es 1 → agregamos **Zona 2 – Zona 3 (1 km)**.
+
+**Paso 4.** U = {1, 2, 3, 4, 6}. Costo acumulado: 5 km.
+
+Con los caminos de la Zona 3, la Zona 5 pasa a costar 3 (mejor que 4).
+
+| Zona | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| Distancia mínima | ✔ | ✔ | ✔ | **3** | ✔ |
+| Desde | | | | 3 | |
+
+Agregamos **Zona 3 – Zona 5 (3 km)**.
+
+**Paso 5.** U = {1, 2, 3, 4, 5, 6}. Ya están todas las zonas, así que termina el algoritmo.
+
+
+### Árbol abarcador de costo mínimo obtenido
 
 El resultado final de aplicar Prim es la Imagen 2 (la de abajo).
 
-El árbol utiliza 5 caminos para conectar las 6 zonas, sin generar ciclos.
-
-Por lo tanto, la distancia mínima necesaria para conectar todas las zonas es de **8 km**.
-
+El árbol usa 5 caminos para conectar las 6 zonas, sin generar ciclos. La mejor opción es construir los caminos **1–4, 4–6, 1–2, 2–3 y 3–5**, con un total de **8 km**.
 ---
 
-## Parte 2 – Implementación del algoritmo
 
-### 1. Pseudocódigo de Prim
+## Parte 2
 
-Para implementar Prim utilizamos una matriz de adyacencia. También necesitamos tres estructuras auxiliares:
+### 1. Pseudocódigo detallado de Prim
 
-- `visitados`: indica qué vértices ya fueron agregados al árbol.
-- `distancia`: guarda el menor costo conocido para conectar cada vértice al árbol.
-- `padre`: guarda desde qué vértice se realiza esa conexión.
+**Descripción en lenguaje natural:**
+
+Primero separamos los vértices en dos grupos: los que ya están conectados al árbol (U) y los que todavía faltan (resto). Al principio, U tiene solamente el vértice de inicio. En cada paso buscamos la conexión más corta entre los dos grupos y la agregamos al árbol. Después pasamos el vértice nuevo al grupo U. Repetimos esto hasta que todos los vértices estén conectados. Si no encontramos una conexión entre los dos grupos, significa que el grafo no es conexo y no se pueden conectar todos los vértices.
+
 
 **Pseudocódigo:**
 
-\`\`\`text
-Prim(matriz, n, inicio)
+```text
+prim(grafo, origen): IUndirectedGraph
 
-    Crear arreglo visitados[n]
-    Crear arreglo distancia[n]
-    Crear arreglo padre[n]
+Precondiciones:
+    - grafo no es nulo
+    - grafo es no dirigido y los pesos de las aristas son mayores o iguales a 0
+Postcondiciones:
+    - Devuelve un grafo nuevo que tiene todos los vértices de grafo.
+    - Si grafo es conexo y origen existe, el resultado tiene |V| - 1 aristas,
+      no tiene ciclos y la suma de sus pesos es mínima.
+    - Si grafo no es conexo, el resultado solo tiene las aristas del árbol mínimo
+      de la componente donde está origen (los demás vértices quedan sin aristas).
+    - Si origen no existe en grafo, el resultado no tiene aristas.
+    - El grafo original no se modifica.
 
-    Para i desde 0 hasta n-1
-        visitados[i] = falso
-        distancia[i] = infinito
-        padre[i] = -1
-    Fin Para
+COMIENZO
 
-    distancia[inicio] = 0
+    result <- nuevo UndirectedGraph()
+    result.agregarVertices(grafo.vertices())
 
-    Para i desde 0 hasta n-1
+    inicio <- grafo.buscarVertice(origen)
+    SI inicio = nulo ENTONCES
+        DEVOLVER result                          // el origen no existe
+    FIN SI
 
-        minimo = infinito
-        u = -1
+    U <- nuevo HashSet()
+    resto <- nuevo HashSet(grafo.vertices())
+    U.add(inicio)
+    resto.remove(inicio)
 
-        Para j desde 0 hasta n-1
-            Si visitados[j] = falso Y distancia[j] < minimo
-                minimo = distancia[j]
-                u = j
-            Fin Si
-        Fin Para
+    MIENTRAS NO resto.isEmpty() HACER
+        aristaMin <- searchMinEdge(grafo, U, resto)
+        SI aristaMin = nulo ENTONCES
+            SALIR DEL MIENTRAS                   // no es conexo, no se puede seguir
+        FIN SI
+        result.agregarArista(aristaMin.source(), aristaMin.target(), aristaMin.dato())
+        U.add(aristaMin.target())
+        resto.remove(aristaMin.target())
+    FIN MIENTRAS
 
-        Si u = -1
-            Error: el grafo no es conexo
-        Fin Si
+    DEVOLVER result
+FIN
+```
 
-        visitados[u] = verdadero
+```text
+searchMinEdge(grafo, U, resto): Edge
 
-        Para v desde 0 hasta n-1
+Precondiciones:
+    - grafo.adyacencias(u) devuelve aristas cuyo source() es u
+Postcondiciones:
+    - Devuelve la arista de menor peso con source() en U y target() en resto.
+    - Si no existe ninguna, devuelve nulo.
+    - En caso de empate devuelve la primera que encuentra.
 
-            Si matriz[u][v] existe Y visitados[v] = falso
-                Si matriz[u][v] < distancia[v]
-                    distancia[v] = matriz[u][v]
-                    padre[v] = u
-                Fin Si
-            Fin Si
+COMIENZO
+    aristaMin <- nulo
+    pesoMin <- INFINITO
 
-        Fin Para
+    PARA CADA u EN U HACER
+        PARA CADA arista EN grafo.adyacencias(u) HACER
+            SI resto.contains(arista.target()) ENTONCES
+                SI arista.dato().getWeight() < pesoMin ENTONCES
+                    pesoMin <- arista.dato().getWeight()
+                    aristaMin <- arista
+                FIN SI
+            FIN SI
+        FIN PARA CADA
+    FIN PARA CADA
 
-    Fin Para
+    DEVOLVER aristaMin
+FIN
+```
 
-    Para i desde 0 hasta n-1
-        Si i != inicio
-            Mostrar padre[i], i, distancia[i]
-        Fin Si
-    Fin Para
+**Orden del tiempo de ejecución:**
 
-Fin Prim
-\`\`\`
+En total queda **O(V · A)**.
 
-### 2. Complejidad temporal
+### 2. Prueba paso a paso con un escenario reducido (4 zonas)
 
-La complejidad temporal de este algoritmo es O(V²), utilizando una matriz de adyacencia.
-
-Esto se debe a que, en cada iteración, se busca el vértice no visitado con menor distancia y luego se recorren los posibles vecinos para actualizar sus costos.
-
-Como ambas operaciones recorren los vértices, el costo total es cuadrático.
-
-### 3. Escenario reducido
-
-Ahora consideramos un escenario con solamente cuatro zonas.
-
-La matriz de adyacencia es la siguiente:
+Tomamos solamente las zonas 1 a 4:
 
 |      | Z1 | Z2 | Z3 | Z4 |
 |------|----|----|----|----|
-| Z1   | X  | 2  | 5  | 1  |
-| Z2   | 2  | X  | 1  | 3  |
-| Z3   | 5  | 1  | X  | 2  |
-| Z4   | 1  | 3  | 2  | X  |
+| Z1   | x  | 2  | 5  | 1  |
+| Z2   | 2  | x  | 1  | 3  |
+| Z3   | 5  | 1  | x  | 2  |
+| Z4   | 1  | 3  | 2  | x  |
 
-Comenzando desde la Zona 1, Prim realiza los siguientes pasos:
+Ejecutamos `prim(grafo, Z1)`. Para hacerlo a mano suponemos que `U` se recorre en el orden en que se fueron agregando los vértices.
 
-1. Conecta la Zona 1 con la Zona 4, porque es el camino más corto (1 km).
-2. Conecta la Zona 1 con la Zona 2 (2 km).
-3. Desde la Zona 2 conecta con la Zona 3 (1 km).
+**Inicio:** `U = {Z1}`, `resto = {Z2, Z3, Z4}`, `result` tiene los 4 vértices y ninguna arista.
 
-La distancia total es:
+**Vuelta 1:** `searchMinEdge` revisa las adyacencias de Z1 que van a `resto`:
 
-1 + 2 + 1 = **4 km**.
+| Arista | Peso | ¿Mejora pesoMin? | aristaMin |
+|---|---|---|---|
+| Z1 → Z2 | 2 | sí (2 < ∞) | Z1 → Z2 |
+| Z1 → Z3 | 5 | no | Z1 → Z2 |
+| Z1 → Z4 | 1 | sí (1 < 2) | **Z1 → Z4** |
 
-### 4. Casos de prueba
+Se agrega Z1 – Z4 (1). `U = {Z1, Z4}`, `resto = {Z2, Z3}`. Costo acumulado: 1.
 
-Para comprobar que el algoritmo funciona correctamente, podemos probar diferentes situaciones:
+**Vuelta 2:** se revisan las adyacencias de Z1 y de Z4 que van a `resto`:
 
-| Caso | Resultado esperado |
-|------|--------------------|
-| Grafo original de 6 zonas | MST de 8 km |
-| Grafo reducido de 4 zonas | MST de 4 km |
-| Grafo con un solo vértice | Árbol sin aristas y costo 0 |
-| Grafo no conexo | No se puede construir un árbol de expansión |
-| Grafo con varios caminos del mismo peso | Debe encontrar algún MST válido |
-| Grafo con varias soluciones mínimas | Puede devolver cualquiera de ellas |
+| Arista | Peso | ¿Mejora pesoMin? | aristaMin |
+|---|---|---|---|
+| Z1 → Z2 | 2 | sí (2 < ∞) | **Z1 → Z2** |
+| Z1 → Z3 | 5 | no | Z1 → Z2 |
+| Z4 → Z2 | 3 | no | Z1 → Z2 |
+| Z4 → Z3 | 2 | no (2 no es < 2) | Z1 → Z2 |
 
+Se agrega Z1 – Z2 (2). `U = {Z1, Z4, Z2}`, `resto = {Z3}`. Costo acumulado: 3.
+
+Acá hubo un empate entre Z1 → Z2 y Z4 → Z3. Como la comparación es `<` estricta, queda la primera que se encontró.
+
+**Vuelta 3:** solo queda Z3 en `resto`:
+
+| Arista | Peso | ¿Mejora pesoMin? | aristaMin |
+|---|---|---|---|
+| Z1 → Z3 | 5 | sí (5 < ∞) | Z1 → Z3 |
+| Z4 → Z3 | 2 | sí (2 < 5) | Z4 → Z3 |
+| Z2 → Z3 | 1 | sí (1 < 2) | **Z2 → Z3** |
+
+Se agrega Z2 – Z3 (1). `U = {Z1, Z4, Z2, Z3}`, `resto = {}`. Costo acumulado: 4.
+
+**Fin:** `resto` está vacío, así que sale del `MIENTRAS`.
+
+**Resultado:** árbol con Z1 – Z4, Z1 – Z2 y Z2 – Z3, es decir 3 aristas (4 − 1), con una distancia total de **4 km**. Verificamos a mano que no hay otra combinación más barata (por ejemplo Z1–Z4, Z4–Z3, Z3–Z2 también da 4, y Z1–Z2, Z2–Z3, Z2–Z4 da 6), así que el algoritmo funciona correctamente.
+
+### 3. Casos de prueba
+
+| # | Caso | Entrada | Resultado esperado |
+|---|---|---|---|
+| 1 | Origen que no existe | Grafo A–B (1), origen "Z" | Grafo con A y B, sin aristas |
+| 2 | Un solo vértice | {A}, origen A | Grafo con A, sin aristas, costo 0 |
+| 3 | Dos vértices | A–B (5), origen A | Árbol {A–B}, costo 5 |
+| 4 | Grafo que ya es un árbol | A–B (1), B–C (2), C–D (3) | Las mismas 3 aristas, costo 6 |
+| 5 | Grafo no conexo | A–B (1), C–D (1), origen A | Solo la arista A–B; C y D quedan sin aristas (menos de \|V\| − 1 aristas) |
+| 6 | Grafo con un ciclo | A–B (1), B–C (2), A–C (3) | {A–B, B–C}, costo 3 (descarta la arista de 3) |
+| 7 | Aristas con el mismo peso | 4 vértices, todas las aristas de costo 1 | Cualquier árbol válido: 3 aristas, costo 3 |
+| 8 | Aristas de costo 0 | A–B (0), B–C (4), A–C (2) | {A–B, A–C}, costo 2 |
 

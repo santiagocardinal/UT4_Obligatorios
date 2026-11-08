@@ -37,20 +37,8 @@ El grafo es no dirigido porque se puede circular por los caminos en ambos sentid
 
 Para conectar todas las zonas utilizando la menor cantidad total de kilómetros posible, sin generar ciclos. Para resolverlo utilizamos el algoritmo de Kruskal.
 
-### 2. Matriz de distancias
 
-La matriz de distancias representa los kilómetros que hay entre cada par de zonas.
-
-| Zona | Zona 1 | Zona 2 | Zona 3 | Zona 4 | Zona 5 | Zona 6 |
-|---|---:|---:|---:|---:|---:|---:|
-| Zona 1 | X | 3 | 5 | 1 | 7 | 2 |
-| Zona 2 | 3 | X | 1 | 3 | 5 | 6 |
-| Zona 3 | 5 | 1 | X | 2 | 3 | 5 |
-| Zona 4 | 1 | 3 | 2 | X | 7 | 1 |
-| Zona 5 | 7 | 5 | 3 | 7 | X | 4 |
-| Zona 6 | 2 | 6 | 5 | 1 | 4 | X |
-
-### 3. Aplicación del algoritmo de Kruskal
+### 2. Aplicación del algoritmo de Kruskal
 
 El algoritmo de Kruskal busca construir un árbol de expansión mínima seleccionando las aristas de menor peso.
 
@@ -95,7 +83,7 @@ A diferencia de Prim, Kruskal no comienza desde una zona determinada. Primero or
 8. Seleccionamos Zona 3 – Zona 5, con una distancia de 3 km. Se agrega porque permite conectar la Zona 5, que todavía no estaba conectada con las demás.
 
 
-### 4. Árbol de expansión mínima obtenido
+###  Árbol de expansión mínima obtenido
 
 Las conexiones seleccionadas por Kruskal son:
 
